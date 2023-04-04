@@ -1,3 +1,4 @@
+import 'package:amebal/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:amebal/widgets/bottom_nav_bar.dart';
 import 'package:amebal/themes/light.dart';
@@ -25,10 +26,12 @@ class _MainAppState extends State<MainApp> {
       darkTheme: dark,
       themeMode: currentTheme,
       home: Scaffold(
+        appBar: CustomAppBar(toggle: toggleTheme, currentTheme: currentTheme),
         bottomNavigationBar: BottomNavBar(pageIndex: pageIndex),
       ),
     );
   }
+
 
   void toggleTheme(){
     setState(() {

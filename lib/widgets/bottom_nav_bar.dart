@@ -14,8 +14,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return BottomNavigationBar(
         currentIndex: widget.pageIndex,
         iconSize: 28,
-        selectedItemColor: const Color(0xff155195),
-        unselectedItemColor: const Color(0x55555555),
+        selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+        unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
         type: BottomNavigationBarType.shifting,
         onTap: (index) {
           setState(() {
