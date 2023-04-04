@@ -1,3 +1,4 @@
+import 'package:amebal/pages/home.dart';
 import 'package:amebal/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:amebal/widgets/bottom_nav_bar.dart';
@@ -27,6 +28,7 @@ class _MainAppState extends State<MainApp> {
       themeMode: currentTheme,
       home: Scaffold(
         appBar: CustomAppBar(toggle: toggleTheme, currentTheme: currentTheme),
+        body: const Home(),
         bottomNavigationBar: BottomNavBar(pageIndex: pageIndex),
       ),
     );

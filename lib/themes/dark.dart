@@ -5,5 +5,10 @@ ThemeData dark = ThemeData(
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.lightBlue,
         unselectedItemColor: Colors.grey
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+        fillColor: Colors.black12,
+        labelStyle: TextStyle(color: Colors.grey),
+        iconColor: Colors.grey
     )
 );
