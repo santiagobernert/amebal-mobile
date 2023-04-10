@@ -1,4 +1,5 @@
 import 'package:amebal/pages/home.dart';
+import 'package:amebal/pages/profile.dart';
 import 'package:amebal/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:amebal/widgets/bottom_nav_bar.dart';
@@ -18,7 +19,8 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   ThemeMode currentTheme = ThemeMode.system;
-  int pageIndex = 2;
+  List<Widget> pages = const[Home(), Profile()];
+  int pageIndex = 1;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +30,7 @@ class _MainAppState extends State<MainApp> {
       themeMode: currentTheme,
       home: Scaffold(
         appBar: CustomAppBar(toggle: toggleTheme, currentTheme: currentTheme),
-        body: const Home(),
+        body: pages[pageIndex],
         bottomNavigationBar: BottomNavBar(pageIndex: pageIndex),
       ),
     );

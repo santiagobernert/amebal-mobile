@@ -8,7 +8,7 @@ class Noticia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: principal? double.infinity : 160,
+      width: principal? double.infinity : MediaQuery.of(context).size.width * 0.41,
       color: Colors.amberAccent,
       height: principal? 150 : 100,
       padding: const EdgeInsets.all(10),

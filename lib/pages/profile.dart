@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _HomeState extends State<Home> {
+class _ProfileState extends State<Profile> {
 
   void search(){
     setState(() {
@@ -17,16 +17,18 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        CircleAvatar(radius: 20,),
-        Text("Nombre Apellido"),
-        Text("HABILITADO"),
-        SizedBox(height: 40,),
-        Text("Club Mendoza de Regatas"),
-        Text("Juvenil")
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          CircleAvatar(radius: 50,),
+          Text("Nombre Apellido"),
+          Text("HABILITADO"),
+          SizedBox(height: 40,),
+          Text("Club Mendoza de Regatas"),
+          Text("Juvenil")
+        ],
+      ),
     );
   }
 }
