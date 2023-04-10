@@ -1,4 +1,4 @@
-import 'package:amebal/pages/noticia.dart';
+import 'package:amebal/widgets/noticia.dart';
 import 'package:amebal/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +20,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 0),
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.spaceBetween,
         children: [
             TextInput(search),
             Padding(
@@ -30,6 +31,7 @@ class _HomeState extends State<Home> {
               child: Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
             ),
           const Noticia(principal: true, titulo: "Regatas vs Maipu"),
+          const Noticia(titulo: "Torneo de infantiles"),
           const Noticia(titulo: "Torneo de infantiles")
 
         ],

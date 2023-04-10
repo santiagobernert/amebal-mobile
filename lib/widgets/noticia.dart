@@ -8,12 +8,12 @@ class Noticia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: principal? double.infinity : 120,
+      width: principal? double.infinity : 160,
       color: Colors.amberAccent,
-      height: principal? 100 : 50,
+      height: principal? 150 : 100,
       padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-      alignment: const Alignment(1, 0),
+      margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+      alignment: const Alignment(0, 0),
       child: Text(titulo),
     );
   }
