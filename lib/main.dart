@@ -30,7 +30,7 @@ class _MainAppState extends State<MainApp> {
       themeMode: currentTheme,
       home: Scaffold(
         appBar: CustomAppBar(toggle: toggleTheme, currentTheme: currentTheme),
-        body: pages[pageIndex],
+        body: const Home(),
         bottomNavigationBar: BottomNavBar(pageIndex: pageIndex),
       ),
     );
