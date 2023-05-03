@@ -16,18 +16,27 @@ class _HomeState extends State<Home> {
 
   Future<List<String>> getNews() async {
     print('get news');
-    var response = await http.get(Uri.parse('http://127.0.0.1:8000/club'));
-    if (response.statusCode == 200) {
-      List<dynamic> body = jsonDecode(response.body);
+    var response;
+    try {
+      var response = await http.get(
+          Uri.parse('http://10.0.2.2:8000/club'));
+      if (response.statusCode == 200) {
+        List<dynamic> body = jsonDecode(response.body)["clubes"];
 
-      List<String> news = body.map(
-              (dynamic n) => n.nombre.toString()
-      ).toList();
-      print(news);
-      return news;
-    }else {
-      throw "Unable to retrieve news";
+        List<String> news = body.map(
+                (data) => data["nombre"].toString()
+        ).toList();
+        print(news);
+        return news;
+      }else {
+        print(response.statusCode);
+        throw "Unable to retrieve news";
+      }
     }
+    catch (e){
+      print(e);
+    }
+    return response;
   }
 
   void search(){
