@@ -13,21 +13,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  Future<List<String>> getNews() async {
+  String first = '';
+  List<String> news = [];
+  void getNews() async {
     print('get news');
-    var response;
     try {
       var response = await http.get(
           Uri.parse('http://10.0.2.2:8000/club'));
       if (response.statusCode == 200) {
         List<dynamic> body = jsonDecode(response.body)["clubes"];
 
-        List<String> news = body.map(
+        List<String> responseData = body.map(
                 (data) => data["nombre"].toString()
         ).toList();
+        first = responseData[0];
+        responseData.removeAt(0);
+        news = responseData;
         print(news);
-        return news;
       }else {
         print(response.statusCode);
         throw "Unable to retrieve news";
@@ -36,32 +38,45 @@ class _HomeState extends State<Home> {
     catch (e){
       print(e);
     }
-    return response;
   }
 
   void search(){
     setState(() {
-
+        getNews();
     });
+  }
+  @override
+  void initState() {
+    super.initState();
+    getNews();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 0),
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        alignment: WrapAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-            TextInput(search),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
-            ),
-          const Noticia(principal: true, titulo: "Regatas vs Maipu"),
-          const Noticia(titulo: "Torneo de infantiles"),
-          const Noticia(titulo: "Torneo de infantiles"),
-          OutlinedButton(onPressed: getNews, child: Text("news"))
+          TextInput(search),
+          Expanded(
+            child: ListView(
+              children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
+              ),
+              Noticia(principal: true, titulo: first,),
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.spaceBetween,
+                children: news.map((title)=>Noticia(titulo: title)).toList(),
+              ),
+              OutlinedButton(onPressed: search, child: Text("news")),
+            ]),
+          )
+
 
         ],
       ),
