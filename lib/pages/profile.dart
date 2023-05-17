@@ -81,7 +81,7 @@ class _ProfileState extends State<Profile> {
       player = Player.fromJson(playerJson);
     }else {
       print(response.statusCode);
-      throw Exception("Unable to retrieve news");
+      throw Exception("Unable to retrieve user");
     }
 
 
