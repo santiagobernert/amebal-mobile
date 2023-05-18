@@ -38,26 +38,10 @@ class Game{
 }
 
 class GameWidget extends StatelessWidget {
-  String id;
-  String titulo;
-  String torneo;
-  String categoria;
-  String equipoA;
-  String equipoB;
-  String arbitro1;
-  String arbitro2;
-  String mesa1;
-  String mesa2;
-  String sede;
-  String fecha;
-  String jornada;
-  String resultado;
-  GameWidget({super.key, required this.id, required this.titulo, required this.torneo, required this.categoria, required this.equipoA, required this.equipoB,
-   required this.arbitro1, required this.arbitro2, required this.mesa1, required this.mesa2,
-   required this.sede, required this.fecha, required this.jornada, required this.resultado});
+  Game game;
+  GameWidget({super.key, required this.game});
   @override
   Widget build(BuildContext context) {
-    Game game = Game(id: id, titulo: titulo, torneo: torneo, categoria: categoria, equipoA: equipoA, equipoB: equipoB, arbitro1: arbitro1, arbitro2: arbitro2, mesa1: mesa1, mesa2: mesa2, sede: sede, fecha: fecha, jornada: jornada, resultado: resultado,) ;
     return Container(
       width: double.infinity,
       color: Colors.white,
@@ -66,9 +50,19 @@ class GameWidget extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
       alignment: Alignment.center,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(child: Container(color: Colors.indigo, child: Text(game.torneo),))
+          Expanded(child: Container(color: Colors.indigo, child: Text(game.torneo),)),
+          Text(game.torneo),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(game.resultado)
+            ],
+          ),
+          Text(game.titulo),
         ],
       ),
     );

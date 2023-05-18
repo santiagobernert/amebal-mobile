@@ -1,3 +1,4 @@
+import 'package:amebal/pages/fixture.dart';
 import 'package:amebal/pages/home.dart';
 import 'package:amebal/pages/profile.dart';
 import 'package:amebal/widgets/app_bar.dart';
@@ -30,7 +31,7 @@ class _MainAppState extends State<MainApp> {
       themeMode: currentTheme,
       home: Scaffold(
         appBar: CustomAppBar(toggle: toggleTheme, currentTheme: currentTheme),
-        body: const Profile(),
+        body: const Fixture(),
         bottomNavigationBar: BottomNavBar(pageIndex: pageIndex),
       ),
     );
