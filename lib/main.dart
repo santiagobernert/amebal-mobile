@@ -20,8 +20,15 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   ThemeMode currentTheme = ThemeMode.system;
-  List<Widget> pages = const[Home(), Profile()];
+  List<Widget> pages = const[Home(), Fixture(), Home(), Home(), Profile()];
   int pageIndex = 1;
+
+  void click(){
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +38,7 @@ class _MainAppState extends State<MainApp> {
       themeMode: currentTheme,
       home: Scaffold(
         appBar: CustomAppBar(toggle: toggleTheme, currentTheme: currentTheme),
-        body: const Fixture(),
+        body: pages[pageIndex],
         bottomNavigationBar: BottomNavBar(pageIndex: pageIndex),
       ),
     );
