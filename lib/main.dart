@@ -23,9 +23,9 @@ class _MainAppState extends State<MainApp> {
   List<Widget> pages = const[Home(), Fixture(), Home(), Home(), Profile()];
   int pageIndex = 1;
 
-  void click(){
+  void click(int index){
     setState(() {
-
+      pageIndex = index;
     });
   }
 
@@ -39,7 +39,7 @@ class _MainAppState extends State<MainApp> {
       home: Scaffold(
         appBar: CustomAppBar(toggle: toggleTheme, currentTheme: currentTheme),
         body: pages[pageIndex],
-        bottomNavigationBar: BottomNavBar(pageIndex: pageIndex),
+        bottomNavigationBar: BottomNavBar(pageIndex: pageIndex, onClicked: click,),
       ),
     );
   }

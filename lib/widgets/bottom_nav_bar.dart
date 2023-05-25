@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
-  late int pageIndex;
-  BottomNavBar({super.key, required this.pageIndex});
+  final int pageIndex;
+  ValueChanged<int> onClicked;
+
+  BottomNavBar({super.key, required this.pageIndex, required this.onClicked});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -17,11 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
         unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
         type: BottomNavigationBarType.shifting,
-        onTap: (index) {
-          setState(() {
-            widget.pageIndex = index;
-          });
-        },
+        onTap: widget.onClicked,
         items: _navBarItems);
   }
 }
