@@ -112,6 +112,13 @@ class _ProfileState extends State<Profile> {
 
 
   }
+
+  @override
+  void initState() {
+    super.initState();
+    getProfile();
+  }
+
   void search(){
     setState(() {
       getProfile();
@@ -176,7 +183,17 @@ class _ProfileState extends State<Profile> {
           ),
         ),
             Icon(Icons.directions_car, size: 350),
-            Icon(Icons.directions_car, size: 350),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.file_copy_rounded),
+                  Text("Ficha Médica"),
+                  IconButton(onPressed: getProfile, icon: Icon(Icons.download), style: ButtonStyle(),)
+                ],)
+              ],
+            ),
           ],
         ),
       ),

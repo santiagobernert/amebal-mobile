@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:amebal/widgets/noticia.dart';
+import 'package:amebal/widgets/article_widget.dart';
 import 'package:amebal/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,23 +13,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String first = '';
-  List<String> news = [];
+  Map first = {};
+  List<Map<String, dynamic>> news = [];
   void getNews() async {
     print('get news');
     try {
       var response = await http.get(
-          Uri.parse('http://10.0.2.2:8000/club'));
+          Uri.parse('http://10.0.2.2:8000/articulo'));
       if (response.statusCode == 200) {
-        List<dynamic> body = jsonDecode(response.body)["clubes"];
+        List<dynamic> body = jsonDecode(response.body)["articulos"];
+        print(body);
 
-        List<String> responseData = body.map(
-                (data) => data["nombre"].toString()
+        List<Map<String, dynamic>> responseData = body.map(
+                (data) => {"id": data["id"], "title": data["titulo"].toString()}
         ).toList();
         first = responseData[0];
         responseData.removeAt(0);
         news = responseData;
         print(news);
+        print(first);
       }else {
         print(response.statusCode);
         throw "Unable to retrieve news";
@@ -53,6 +55,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    getNews();
     return Padding(
       padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 0),
       child: Column(
@@ -67,11 +70,11 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
               ),
-              Noticia(principal: true, titulo: first,),
+              ArticleWidget(main: true, id: first["id"], title: first["title"],),
               Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 alignment: WrapAlignment.spaceBetween,
-                children: news.map((title)=>Noticia(titulo: title)).toList(),
+                children: news.map((n)=>ArticleWidget(id: n["id"], title: n["title"])).toList(),
               ),
               OutlinedButton(onPressed: search, child: Text("news")),
             ]),
