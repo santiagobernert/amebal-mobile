@@ -39,7 +39,7 @@ class _ArticleWidgetState extends State<ArticleWidget> {
         height: widget.main? 170 : 120,
         padding: const EdgeInsets.all(15),
         alignment: Alignment.bottomLeft,
-        child: Text(widget.title, style: TextStyle(color: Colors.white),),
+        child: Text(widget.title, style: TextStyle(color: Colors.white, fontSize: 20),),
         ),
     );
   }

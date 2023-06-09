@@ -76,7 +76,7 @@ class GameWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         color: Colors.white,
       ),
       height: 170,
