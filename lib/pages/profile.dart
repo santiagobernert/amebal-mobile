@@ -168,9 +168,6 @@ class _ProfileState extends State<Profile> {
               children: [
                 Text("Datos del usuario"),
                 SizedBox(height: 10,),
-                Table(
-                  children: [],
-                ),
                 Row(children: [Text("Peso: "), Text("${player.peso}"),],),
                 Row(children: [Text("Estatura: "), Text("${player.estatura}"),],),
                 Row(children: [Text("Mano hábil: "), Text("${player.mano}"),],),
@@ -185,7 +182,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),
-            Icon(Icons.directions_car, size: 350),
+            const Icon(Icons.directions_car, size: 350),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

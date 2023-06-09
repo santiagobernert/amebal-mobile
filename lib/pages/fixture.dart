@@ -14,6 +14,7 @@ class Fixture extends StatefulWidget {
 
 class _FixtureState extends State<Fixture> {
   List games = [];
+
   void getFixture() async {
     print('get fixture');
     var response = await http.get(
@@ -21,35 +22,88 @@ class _FixtureState extends State<Fixture> {
     if (response.statusCode == 200) {
       dynamic body = jsonDecode(response.body)["partidos"];
       print(body);
-      games = (body as List<dynamic>).map((g)=>Game.fromJson(g as Map<String, dynamic>)).toList();
-    }else {
+      games = (body as List<dynamic>).map((g) =>
+          Game.fromJson(g as Map<String, dynamic>)).toList();
+    } else {
       print(response.statusCode);
       throw Exception("Unable to retrieve games");
     }
-
-
   }
-  void search(){
+
+  void search() {
     setState(() {
       getFixture();
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    getFixture();
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-                child: ListView(
-                  children: games.map((game) => GameWidget(game: game)).toList()
-                )
-            ),
-            OutlinedButton(onPressed: search, child: const Text('get'))
-          ]
-    ),);
+  void filter(String enteredKeyword) {
+    List<dynamic>? results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      results = games;
+    } else {
+      results = games
+          .where((game) =>
+          game["titulo"].toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+      // we use the toLowerCase() method to make it case-insensitive
+    }
+
+    // Refresh the UI
+    setState(() {
+      games = results!;
+    });
   }
-}
+
+    @override
+    Widget build(BuildContext context) {
+      getFixture();
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DropdownButton<String>(
+                items: <String>['Año', 'B', 'C', 'D'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
+              DropdownButton<String>(
+                items: <String>['Categoria', 'B', 'C', 'D'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
+              DropdownButton<String>(
+                items: <String>['Masculino', 'Femenino'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
+              TextField(
+                onChanged: (value) => filter(value),
+                decoration: const InputDecoration(
+                    labelText: 'Search', suffixIcon: Icon(Icons.search)),
+              ),
+              Expanded(
+                  child: ListView(
+                      children: games.map((game) => GameWidget(game: game))
+                          .toList()
+                  )
+              ),
+              OutlinedButton(onPressed: search, child: const Text('get'))
+            ]
+        ),);
+    }
+  }
+
