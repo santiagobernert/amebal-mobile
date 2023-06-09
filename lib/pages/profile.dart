@@ -64,20 +64,20 @@ class Player {
       nacimiento: json["nacimiento"],
       sexo: json["sexo"],
       estado: json["estado"],
-      categoria: json["categoria"]?.join("")??"NA",
+      categoria: json["categoria"] ?? "",
       club: json["club"],
-        peso: json["peso"],
-        estatura: json["estatura"],
-        mano: json["mano"],
-        posicion: json["posicion"],
-        sanguineo: json["sanguineo"],
-        telefono: json["telefono"],
-        provincia: json["provincia"],
-        departamento: json["departamento"],
-        localidad: json["localidad"],
-        domicilio: json["domicilio"],
-        obrasocial: json["obrasocial"],
-        carnet: json["carnet"],
+      peso: json["peso"],
+      estatura: json["estatura"],
+      mano: json["mano"],
+      posicion: json["posicion"],
+      sanguineo: json["sanguineo"],
+      telefono: json["telefono"],
+      provincia: json["provincia"],
+      departamento: json["departamento"],
+      localidad: json["localidad"],
+      domicilio: json["domicilio"],
+      obrasocial: json["obrasocial"],
+      carnet: json["carnet"],
     );
   }
 }
@@ -101,7 +101,7 @@ class _ProfileState extends State<Profile> {
       dynamic body = jsonDecode(response.body)["usuario"];
       user = User.fromJson(body);
       var getplayer = await http.get(
-        Uri.parse('http://10.0.2.2:8000/jugador?dni=${user.dni}',)
+        Uri.parse('http://10.0.2.2:8000/jugador?id=${user.id}',)
       );
       dynamic playerJson = jsonDecode(getplayer.body)["jugador"];
       player = Player.fromJson(playerJson);
@@ -168,6 +168,9 @@ class _ProfileState extends State<Profile> {
               children: [
                 Text("Datos del usuario"),
                 SizedBox(height: 10,),
+                Table(
+                  children: [],
+                ),
                 Row(children: [Text("Peso: "), Text("${player.peso}"),],),
                 Row(children: [Text("Estatura: "), Text("${player.estatura}"),],),
                 Row(children: [Text("Mano hábil: "), Text("${player.mano}"),],),
