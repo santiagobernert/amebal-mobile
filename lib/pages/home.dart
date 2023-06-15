@@ -16,7 +16,6 @@ class _HomeState extends State<Home> {
   Map first = {};
   List<Map<String, dynamic>> news = [];
   void getNews() async {
-    print('get news');
     try {
       var response = await http.get(
           Uri.parse('http://10.0.2.2:8000/articulo'));
@@ -30,8 +29,6 @@ class _HomeState extends State<Home> {
         first = responseData[0];
         responseData.removeAt(0);
         news = responseData;
-        print(news);
-        print(first);
       }else {
         print(response.statusCode);
         throw "Unable to retrieve news";
