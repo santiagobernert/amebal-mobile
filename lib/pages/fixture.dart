@@ -15,12 +15,10 @@ class Fixture extends StatefulWidget {
 class _FixtureState extends State<Fixture> {
   List games = [];
   void getFixture() async {
-    print('get fixture');
     var response = await http.get(
         Uri.parse('http://10.0.2.2:8000/partidos'));
     if (response.statusCode == 200) {
       dynamic body = jsonDecode(response.body)["partidos"];
-      print(body);
       games = (body as List<dynamic>).map((g)=>Game.fromJson(g as Map<String, dynamic>)).toList();
     }else {
       print(response.statusCode);

@@ -72,7 +72,6 @@ class GameWidget extends StatelessWidget {
   GameWidget({super.key, required this.game});
   @override
   Widget build(BuildContext context) {
-    print("ssdj ${game}");
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
