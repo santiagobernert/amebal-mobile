@@ -1,85 +1,106 @@
+import 'package:amebal/widgets/UserData.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class User{
-  final int id;
-  final String nombre;
-  final String apellido;
-  final int dni;
-  final String email;
-  final String contrasena;
-  final int rol;
-  User(
-      {required this.id, required this.nombre, required this.apellido, required this.dni, required this.email, required this.contrasena, required this.rol}
-      );
+  int id;
+  String nombre;
+  String apellido;
+  int dni;
+  String email;
+  String contrasena;
+  int rol;
+  User(this.id, this.nombre, this.apellido, this.dni, this.email, this.contrasena, this.rol);
 
   factory User.fromJson(Map<String, dynamic> json){
     return User(
-    id : json["id"],
-    nombre : json["nombre"],
-    apellido : json["apellido"],
-    dni : json["dni"],
-    email : json["email"],
-    contrasena : json["contraseña"],
-    rol :json["rol"],
+    json["id"],
+    json["nombre"],
+    json["apellido"],
+    json["dni"],
+    json["email"],
+    json["contraseña"],
+    json["rol"],
     );}
-
-}
+  }
 
 class Player {
-  final int id;
-  final String nombre;
-  final String apellido;
-  final int dni;
-  final String nacimiento;
-  final String sexo;
-  final String estado;
-  final String categoria;
-  final String club;
-  final int peso;
-  final int estatura;
-  final String mano;
-  final String posicion;
-  final String sanguineo;
-  final String telefono;
-  final String provincia;
-  final String departamento;
-  final String localidad;
-  final String domicilio;
-  final String obrasocial;
-  final String carnet;
+  int id;
+  String nombre;
+  String apellido;
+  int dni;
+  String nacimiento;
+  String sexo;
+  String estado;
+  String categoria;
+  String club;
+  int peso;
+  int estatura;
+  String mano;
+  String posicion;
+  String sanguineo;
+  String telefono;
+  String provincia;
+  String departamento;
+  String localidad;
+  String domicilio;
+  String obrasocial;
+  String carnet;
 
   Player(
-      {required this.id, required this.nombre, required this.apellido, required this.dni, required this.nacimiento, required this.sexo, required this.estado, required this.categoria, required this.club,
-      required this.peso, required this.estatura, required this.mano, required this.posicion, required this.sanguineo, required this.telefono, required this.provincia, required this.departamento,
-      required this.localidad, required this.domicilio, required this.obrasocial, required this.carnet});
+      this.id, this.nombre, this.apellido, this.dni, this.nacimiento, this.sexo, this.estado, this.categoria, this.club,
+      this.peso, this.estatura, this.mano, this.posicion, this.sanguineo, this.telefono, this.provincia, this.departamento,
+      this.localidad, this.domicilio, this.obrasocial, this.carnet);
 
   factory Player.fromJson(Map<String, dynamic> json){
     return Player(
-      id: json["id"],
-      nombre: json["nombre"],
-      apellido: json["apellido"],
-      dni: json["dni"],
-      nacimiento: json["nacimiento"],
-      sexo: json["sexo"],
-      estado: json["estado"],
-      categoria: json["categoria"] ?? "",
-      club: json["club"],
-      peso: json["peso"],
-      estatura: json["estatura"],
-      mano: json["mano"],
-      posicion: json["posicion"],
-      sanguineo: json["sanguineo"],
-      telefono: json["telefono"],
-      provincia: json["provincia"],
-      departamento: json["departamento"],
-      localidad: json["localidad"],
-      domicilio: json["domicilio"],
-      obrasocial: json["obrasocial"],
-      carnet: json["carnet"],
+      json["id"],
+      json["nombre"],
+      json["apellido"],
+      json["dni"],
+      json["nacimiento"],
+      json["sexo"],
+      json["estado"],
+      json["categoria"] ?? "",
+      json["club"],
+      json["peso"],
+      json["estatura"],
+      json["mano"],
+      json["posicion"],
+      json["sanguineo"],
+      json["telefono"],
+      json["provincia"],
+      json["departamento"],
+      json["localidad"],
+      json["domicilio"],
+      json["obrasocial"],
+      json["carnet"],
     );
   }
+
+  Map<String, dynamic> getPlayerData() => {
+    "nombre": nombre,
+    "apellido": apellido,
+    "dni": dni,
+    "nacimiento": nacimiento,
+    "sexo": sexo,
+    "estado": estado,
+    "categoria": categoria,
+    "club": club,
+    "peso (kg)": peso,
+    "estatura (cm)": estatura,
+    "mano": mano,
+    "posicion": posicion,
+    "sanguineo": sanguineo,
+    "telefono": telefono,
+    "provincia": provincia,
+    "departamento": departamento,
+    "localidad": localidad,
+    "domicilio": domicilio,
+    "obrasocial": obrasocial,
+  };
+
 }
 
 class Profile extends StatefulWidget {
@@ -90,10 +111,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  User user = User(id: 0, nombre: '', apellido: '', dni: 0, email: '', contrasena: '', rol: 1);
-  Player player = Player(id: 0, nombre: '', apellido: '', dni: 0, estado: '', sexo: '', nacimiento: '', categoria: '', club: '', peso: 0, estatura: 0, mano: '', posicion: '', sanguineo: '', telefono: '', provincia: '', departamento: '', localidad: '', domicilio: '', obrasocial: '', carnet: '');
+  late User user;
+  late Player player;
   void getProfile() async {
-    print('get profile');
     Map<String, String> headers = {'Content-Type': 'application/json'};
     var response = await http.post(
         Uri.parse('http://10.0.2.2:8000/login'), body: jsonEncode({'dni': 44556778, 'contraseña': 'sf778'}), headers: headers);
@@ -109,9 +129,15 @@ class _ProfileState extends State<Profile> {
       print(response.statusCode);
       throw Exception("Unable to retrieve user");
     }
-
-
   }
+
+  Map<String, IconData> icons = {
+    "nacimiento": Icons.calendar_month_rounded,
+    "sexo": Icons.person,
+    "mano": Icons.back_hand,
+    "telefono": Icons.phone,
+    "domicilio": Icons.house_rounded,
+  };
 
   @override
   void initState() {
@@ -168,19 +194,27 @@ class _ProfileState extends State<Profile> {
               children: [
                 Text("Datos del usuario"),
                 SizedBox(height: 10,),
-                Table(
-                  children: [],
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      UserData(Icons.assignment_ind_rounded, "DNI ", "${user.dni}"),
+                      UserData(Icons.email_rounded, "Email ", "${user.email}"),
+                      Row(
+                          children: [
+                            Flexible(
+                              child: Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
+                                direction: Axis.horizontal,
+                                children: player.getPlayerData().entries.map((data) =>
+                                    UserData(icons[data.key]??Icons.add, data.key, data.value.toString())).toList()
+                              ,
+                          ),
+                            )]
+                      )
+                    ],
+                  ),
                 ),
-                Row(children: [Text("Peso: "), Text("${player.peso}"),],),
-                Row(children: [Text("Estatura: "), Text("${player.estatura}"),],),
-                Row(children: [Text("Mano hábil: "), Text("${player.mano}"),],),
-                Row(children: [Text("Grupo Sanguíneo: "), Text("${player.sanguineo}"),],),
-                Row(children: [Text("Teléfono: "), Text("${player.telefono}"),],),
-                Row(children: [Text("Provincia: "), Text("${player.provincia}"),],),
-                Row(children: [Text("Departamento: "), Text("${player.departamento}"),],),
-                Row(children: [Text("Localidad: "), Text("${player.localidad}"),],),
-                Row(children: [Text("Domicilio: "), Text("${player.domicilio}"),],),
-                Row(children: [Text("Obra Social: "), Text("${player.obrasocial}"),],),
               ],
             ),
           ),
