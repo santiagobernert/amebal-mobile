@@ -9,31 +9,17 @@ class UserData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Color(0xff00448d),
-            borderRadius: BorderRadius.horizontal(left: Radius.circular(10))
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                icon!=Icons.add?Icon(icon, color: Colors.white,):const SizedBox(width: 5, height: 25,),
-                Text(
-                  "${fieldName.substring(0, 1).toUpperCase()}${fieldName.substring(1)}", style: const TextStyle(color: Colors.white, fontSize: 10),)
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(data),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+                "${fieldName.substring(0, 1).toUpperCase()}${fieldName.substring(1)}",
+            style: const TextStyle(color: Color(0xFF0A4B8F), fontSize: 12,)),
+          Text(data, style: const TextStyle(fontSize: 16),)
+        ],
+      ),
     );
   }
 }

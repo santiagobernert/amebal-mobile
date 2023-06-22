@@ -174,6 +174,7 @@ class _ProfileState extends State<Profile> {
               child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
                   CircleAvatar(radius: 50,),
                   SizedBox(height: 10,),
                   Text("${user.nombre} ${user.apellido}"),
@@ -183,6 +184,7 @@ class _ProfileState extends State<Profile> {
                   Text(player.categoria),
                   Text(player.carnet),
                   OutlinedButton(onPressed: search, child: Text('get')),
+                  Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
                 ],
               ),
             ),
@@ -190,12 +192,15 @@ class _ProfileState extends State<Profile> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Datos del usuario"),
-                SizedBox(height: 10,),
+                Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
+                const Text("Datos del usuario", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
                 SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       UserData(Icons.assignment_ind_rounded, "DNI ", "${user.dni}"),
                       UserData(Icons.email_rounded, "Email ", "${user.email}"),
@@ -203,6 +208,7 @@ class _ProfileState extends State<Profile> {
                           children: [
                             Flexible(
                               child: Wrap(
+                                alignment: WrapAlignment.spaceBetween,
                                 spacing: 10,
                                 runSpacing: 10,
                                 direction: Axis.horizontal,
