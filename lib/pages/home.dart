@@ -21,7 +21,6 @@ class _HomeState extends State<Home> {
           Uri.parse('http://10.0.2.2:8000/articulo'));
       if (response.statusCode == 200) {
         List<dynamic> body = jsonDecode(response.body)["articulos"];
-        print(body);
 
         List<Map<String, dynamic>> responseData = body.map(
                 (data) => {"id": data["id"], "title": data["titulo"].toString()}
