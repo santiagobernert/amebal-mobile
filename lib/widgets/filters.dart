@@ -14,7 +14,7 @@ class _FiltersState extends State<Filters> {
   late Future<List<String>> categorias;
   late Future<List<String>> torneos;
   late String categoria;
-  late String sexo;
+  late String sexo = "Masculino";
   String torneo='Handball Super Cup 2029';
 
   void change(torneo, categoria, sexo){
