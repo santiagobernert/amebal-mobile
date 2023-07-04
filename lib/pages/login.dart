@@ -1,9 +1,9 @@
 import 'package:amebal/pages/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  Function callback;
+  Login(this.callback, {Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -14,14 +14,10 @@ class _LoginState extends State<Login> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void login(){
-    // if username and password are valid, navigate to Profile
-    signIn(usernameController.text, passwordController.text).then((user) => {
-      this.user = user,
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const Profile()))
+  void onclick(){
+    setState(() {
+      widget.callback();
     });
-    usernameController.clear();
-    passwordController.clear();
   }
 
   @override
@@ -56,7 +52,7 @@ class _LoginState extends State<Login> {
           ),
           const SizedBox(height: 10,),
           OutlinedButton(
-              onPressed: login,
+              onPressed: onclick,
               child: const Text("Log in"))
         ],
       ),

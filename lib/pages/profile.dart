@@ -1,3 +1,4 @@
+import 'package:amebal/pages/login.dart';
 import 'package:amebal/widgets/UserData.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -111,24 +112,56 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  late User user;
-  late Player player;
-  void getProfile() async {
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    var response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/login'), body: jsonEncode({'dni': 44556778, 'contraseña': 'sf778'}), headers: headers);
-    if (response.statusCode == 200) {
-      dynamic body = jsonDecode(response.body)["usuario"];
-      user = User.fromJson(body);
+  late int username;
+  late String password;
+  late Future<User> user;
+  late Future<Player> player;
+
+  Future<User> getUser() async {
+      var response = await http.post(
+          Uri.parse('http://10.0.2.2:8000/login'),
+          body: json.encode({"dni": username, "contraseña": password}));
+      if (response.statusCode == 200) {
+        dynamic user = jsonDecode(response.body)["usuario"];
+        return User.fromJson(user);
+      }
+      else {
+        print(response.statusCode);
+        throw Exception("Unable to retrieve user");
+      }
+  }
+
+  Future<Player> getPlayer(id) async {
       var getplayer = await http.get(
-        Uri.parse('http://10.0.2.2:8000/jugador?id=${user.id}',)
+        Uri.parse('http://10.0.2.2:8000/jugador?id=$id',)
       );
+      if (getplayer.statusCode == 200){
       dynamic playerJson = jsonDecode(getplayer.body)["jugador"];
-      player = Player.fromJson(playerJson);
+      return Player.fromJson(playerJson);
     }else {
-      print(response.statusCode);
-      throw Exception("Unable to retrieve user");
+      print(getplayer.statusCode);
+      throw Exception("Unable to retrieve player");
     }
+  }
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  Future<void> login() async {
+    // if username and password are valid, set state
+      setState(() {
+        username = usernameController.text as int;
+        password = passwordController.text;
+      });
+    usernameController.clear();
+    passwordController.clear();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
   }
 
   Map<String, IconData> icons = {
@@ -142,105 +175,134 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    getProfile();
+    user = getUser();
   }
 
-  void search(){
-    setState(() {
-      getProfile();
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    getProfile();
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: const TabBar(
-            indicatorColor: Colors.lightBlueAccent,
-            tabs: [
-              Tab(text: "Perfil",),
-              Tab(text: "Datos",),
-              Tab(text: "Carnet",),
-              Tab(text: "Archivos",),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            Center(
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+    return FutureBuilder<User>(
+      future: user,
+        builder: (context, user) {
+        if (user.hasError){
+          return Login(login);
+        }
+        if (user.data == null){
+          return const CircularProgressIndicator();
+        }
+      return FutureBuilder<Player>(
+        future: getPlayer(user.data!.id),
+        builder: (context, player) {
+          return DefaultTabController(
+            length: 4,
+            child: Scaffold(
+              appBar: AppBar(
+                bottom: const TabBar(
+                  indicatorColor: Colors.lightBlueAccent,
+                  tabs: [
+                    Tab(text: "Perfil",),
+                    Tab(text: "Datos",),
+                    Tab(text: "Carnet",),
+                    Tab(text: "Archivos",),
+                  ],
+                ),
+              ),
+              body: TabBarView(
                 children: [
-                  Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
-                  CircleAvatar(radius: 50,),
-                  SizedBox(height: 10,),
-                  Text("${user.nombre} ${user.apellido}"),
-                  Text(player.estado.toUpperCase()),
-                  SizedBox(height: 40,),
-                  Text(player.club),
-                  Text(player.categoria),
-                  Text(player.carnet),
-                  OutlinedButton(onPressed: search, child: Text('get')),
-                  Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(border: Border.all(width: 2)),
+                            child: const Text("Anuncio")),
+                        const CircleAvatar(radius: 50,),
+                        const SizedBox(height: 10,),
+                        Text("${user.data!.nombre} ${user.data!.apellido}"),
+                        Text(player.data!.estado.toUpperCase()),
+                        const SizedBox(height: 40,),
+                        Text(player.data!.club),
+                        Text(player.data!.categoria),
+                        Text(player.data!.carnet),
+                        Container(width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(border: Border.all(width: 2)),
+                            child: const Text("Anuncio")),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(width: double.infinity,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  border: Border.all(width: 2)),
+                              child: const Text("Anuncio")),
+                          const Text("Datos del usuario", style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),),
+                          const SizedBox(height: 10,),
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                UserData(Icons.assignment_ind_rounded, "DNI ",
+                                    "${user.data!.dni}"),
+                                UserData(
+                                    Icons.email_rounded, "Email ", user.data!.email),
+                                Row(
+                                    children: [
+                                      Flexible(
+                                        child: Wrap(
+                                          alignment: WrapAlignment.spaceBetween,
+                                          spacing: 10,
+                                          runSpacing: 10,
+                                          direction: Axis.horizontal,
+                                          children: player.data!
+                                              .getPlayerData()
+                                              .entries
+                                              .map((data) =>
+                                              UserData(icons[data.key] ?? Icons.add,
+                                                  data.key, data.value.toString()))
+                                              .toList()
+                                          ,
+                                        ),
+                                      )
+                                    ]
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Icon(Icons.directions_car, size: 350),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.file_copy_rounded),
+                          const Text("Ficha Médica"),
+                          IconButton(onPressed: (){},
+                            icon: const Icon(Icons.download),
+                            style: ButtonStyle(),)
+                        ],)
+                    ],
+                  ),
                 ],
               ),
             ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
-                const Text("Datos del usuario", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                const SizedBox(height: 10,),
-                SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      UserData(Icons.assignment_ind_rounded, "DNI ", "${user.dni}"),
-                      UserData(Icons.email_rounded, "Email ", "${user.email}"),
-                      Row(
-                          children: [
-                            Flexible(
-                              child: Wrap(
-                                alignment: WrapAlignment.spaceBetween,
-                                spacing: 10,
-                                runSpacing: 10,
-                                direction: Axis.horizontal,
-                                children: player.getPlayerData().entries.map((data) =>
-                                    UserData(icons[data.key]??Icons.add, data.key, data.value.toString())).toList()
-                              ,
-                          ),
-                            )]
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-            Icon(Icons.directions_car, size: 350),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.file_copy_rounded),
-                  Text("Ficha Médica"),
-                  IconButton(onPressed: getProfile, icon: Icon(Icons.download), style: ButtonStyle(),)
-                ],)
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-
+          );
+        }
+      );
+    });
   }
 }
