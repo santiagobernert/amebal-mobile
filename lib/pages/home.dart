@@ -14,9 +14,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Map first = {};
-  List<Map<String, dynamic>> news = [];
-  void getNews() async {
-    try {
+  late Future<List<Map<String, dynamic>>> news;
+  Future<List<Map<String, dynamic>>> getNews() async {
       var response = await http.get(
           Uri.parse('http://10.0.2.2:8000/articulo'));
       if (response.statusCode == 200) {
@@ -27,58 +26,58 @@ class _HomeState extends State<Home> {
         ).toList();
         first = responseData[0];
         responseData.removeAt(0);
-        news = responseData;
+        return responseData;
       }else {
         print(response.statusCode);
         throw "Unable to retrieve news";
       }
-    }
-    catch (e){
-      print(e);
-    }
   }
 
-  void search(){
-    setState(() {
-        getNews();
-    });
-  }
   @override
   void initState() {
     super.initState();
-    getNews();
+    news = getNews();
   }
 
   @override
   Widget build(BuildContext context) {
-    getNews();
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextInput(search),
-          Expanded(
-            child: ListView(
-              children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
-              ),
-              ArticleWidget(main: true, id: first["id"], title: first["title"],),
-              Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                alignment: WrapAlignment.spaceBetween,
-                children: news.map((n)=>ArticleWidget(id: n["id"], title: n["title"])).toList(),
-              ),
-              OutlinedButton(onPressed: search, child: Text("news")),
-            ]),
-          )
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: getNews(),
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return const Padding(
+            padding: EdgeInsets.all(200.0),
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextInput((){}),
+              Expanded(
+                child: ListView(
+                  children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
+                  ),
+                  ArticleWidget(main: true, id: first["id"], title: first["title"],),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.spaceBetween,
+                    children: snapshot.data!.map((n)=>ArticleWidget(id: n["id"], title: n["title"])).toList(),
+                  ),
+                ]),
+              )
 
 
-        ],
-      ),
+            ],
+          ),
+        );
+      }
     );
   }
 }
