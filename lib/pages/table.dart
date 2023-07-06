@@ -70,37 +70,49 @@ class PositionsTable extends StatefulWidget {
 
 class _PositionsTableState extends State<PositionsTable> {
   late Future<List> table;
-  Future<List> getTable(torneo, categoria, sexo) async {
+  String torneo = "Global Handball Showdown 2026";
+  String categoria = "Menor";
+  String sexo = "Masculino";
+  Future<List> getTable() async {
     var response = await http.get(
         Uri.parse('http://10.0.2.2:8000/posiciones?categoria=$categoria&sexo=$sexo&torneo=$torneo'));
     if (response.statusCode == 200) {
       dynamic body = jsonDecode(response.body)["tabla"];
+      print(torneo+ categoria+sexo);
       return(body as List<dynamic>).map((t)=>PosTable.fromJson(t as Map<String, dynamic>)).toList();
     } else {
       print(response.statusCode);
+      print(response.body);
       throw Exception("Unable to retrieve table");
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    table = getTable("Mixed Handball Championship 2030", "Menor", "Masculino");
-  }
 
-  void filters(torneo, categoria, sexo){
+  void filters(_torneo, _categoria, _sexo){
+    print(torneo+ categoria+sexo);
     setState(() {
-      getTable(torneo, categoria, sexo);
+      torneo = _torneo;
+      categoria = _categoria;
+      sexo = _sexo;
     });
+    print(torneo+ categoria+sexo);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List>(
-      future: table,
+      future: getTable(),
       builder: (context, snapshot) {
         if (snapshot.hasError){
-          return Text("Error: ${snapshot.error}");
+          return Column(
+            children: [
+              const Text("Tabla de Posiciones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              const SizedBox(height: 20,),
+              Filters(filters),
+              const SizedBox(height: 20,),
+              Text("Error: ${snapshot.error}"),
+            ],
+          );
         }
         if (snapshot.data == null){
           return const CircularProgressIndicator();

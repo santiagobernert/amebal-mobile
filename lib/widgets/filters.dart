@@ -15,9 +15,9 @@ class _FiltersState extends State<Filters> {
   late Future<List<String>> torneos;
   late String categoria;
   late String sexo = "Masculino";
-  String torneo='Handball Super Cup 2029';
+  late String torneo;
 
-  void change(torneo, categoria, sexo){
+  void change(){
     widget.callback(torneo, categoria, sexo);
   }
  //fetching categories from API
@@ -51,6 +51,7 @@ class _FiltersState extends State<Filters> {
         }
       }) ;
       torneo = responseData.last;
+      print(responseData);
       return responseData;//.entries.map((data) => data.key).toList();
     } else {
       print(response.statusCode);
@@ -72,37 +73,6 @@ class _FiltersState extends State<Filters> {
     return Row(
       children: [
         FutureBuilder<List<String>>(
-          future: categorias,
-          builder: (context, snapshot){
-            if (snapshot.hasError){
-              return Text("Error: ${snapshot.error}");
-            }
-            if (snapshot.data == null){
-              return const CircularProgressIndicator();
-            }
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(12, 5, 0, 5),
-              child: SizedBox(
-                width: 80,
-                child: DropdownButton(
-                  //returning a dropdown value for each
-                  isExpanded: true,
-                  focusColor: const Color(0xFF0A4B8F),
-                  value: categoria,
-                  items: snapshot.data!.map((c)=> DropdownMenuItem(value: c, child: Text(c))).toList(),
-                  onChanged: (String? value){
-                    setState(() {
-                      categoria = value!;
-                      //executing callback on change
-                      change(torneo, categoria, sexo);
-                    });
-                  },
-                ),
-              ),
-            );
-          }
-          ),
-        FutureBuilder<List<String>>(
             future: torneos,
 
             builder: (context, snapshot){
@@ -115,9 +85,9 @@ class _FiltersState extends State<Filters> {
               return Row(
                 children: [
                   SizedBox(
-                    width: 160,
+                    width: 180,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 5, 0, 5),
+                      padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
                       child: DropdownButton(
                         //returning a dropdown value for each
                         focusColor: const Color(0xFF0A4B8F),
@@ -128,11 +98,42 @@ class _FiltersState extends State<Filters> {
                           setState(() {
                             torneo = value!;
                             //executing callback on change
-                            change(torneo, categoria, sexo);
+                            change();
                           });
                         },
                       ),
                     ),
+                  ),
+                  FutureBuilder<List<String>>(
+                      future: categorias,
+                      builder: (context, snapshot){
+                        if (snapshot.hasError){
+                          return Text("Error: ${snapshot.error}");
+                        }
+                        if (snapshot.data == null){
+                          return const CircularProgressIndicator();
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 5, 0, 5),
+                          child: SizedBox(
+                            width: 80,
+                            child: DropdownButton(
+                              //returning a dropdown value for each
+                              isExpanded: true,
+                              focusColor: const Color(0xFF0A4B8F),
+                              value: categoria,
+                              items: snapshot.data!.map((c)=> DropdownMenuItem(value: c, child: Text(c))).toList(),
+                              onChanged: (String? value){
+                                setState(() {
+                                  categoria = value!;
+                                  //executing callback on change
+                                  change();
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      }
                   ),
                   Padding(
                     padding: const EdgeInsets.all(5.0),
@@ -146,7 +147,7 @@ class _FiltersState extends State<Filters> {
                       onChanged: (String? value){
                         setState((){
                           sexo = value!;
-                          change(torneo, categoria, sexo);
+                          change();
                         });
                       },
                     ),
