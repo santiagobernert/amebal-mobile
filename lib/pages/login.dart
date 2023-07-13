@@ -15,9 +15,7 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
 
   void onclick(){
-    setState(() {
-      widget.callback();
-    });
+      widget.callback(usernameController.text, passwordController.text);
   }
 
   @override
@@ -30,31 +28,36 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          const Icon(Icons.sports_basketball),
-          const SizedBox(height: 30,),
-          const Text("Login"),
-          TextField(
-            controller: usernameController,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.person),
-              labelText: "Usuario",
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.sports_basketball),
+            const SizedBox(height: 30,),
+            const Text("Login"),
+            TextField(
+              controller: usernameController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.person),
+                labelText: "DNI",
+              ),
             ),
-          ),
-          const SizedBox(height: 10,),
-          TextField(
-            controller: passwordController,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.password),
-              labelText: "Contraseña",
+            const SizedBox(height: 10,),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.password),
+                labelText: "Contraseña",
+              ),
             ),
-          ),
-          const SizedBox(height: 10,),
-          OutlinedButton(
-              onPressed: onclick,
-              child: const Text("Log in"))
-        ],
+            const SizedBox(height: 10,),
+            OutlinedButton(
+                onPressed: onclick,
+                child: const Text("Log in"))
+          ],
+        ),
       ),
     );
   }

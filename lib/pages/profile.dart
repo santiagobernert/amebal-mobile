@@ -112,7 +112,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  late int username;
+  late String username;
   late String password;
   late Future<User> user;
   late Future<Player> player;
@@ -132,6 +132,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<Player> getPlayer(id) async {
+      print("shit $id");
       var getplayer = await http.get(
         Uri.parse('http://10.0.2.2:8000/jugador?id=$id',)
       );
@@ -140,29 +141,20 @@ class _ProfileState extends State<Profile> {
       return Player.fromJson(playerJson);
     }else {
       print(getplayer.statusCode);
+      print("shit $id");
       throw Exception("Unable to retrieve player");
     }
   }
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
 
-  Future<void> login() async {
+  void login(_username, _password) {
     // if username and password are valid, set state
-      setState(() {
-        username = usernameController.text as int;
-        password = passwordController.text;
-      });
-    usernameController.clear();
-    passwordController.clear();
+    setState(() {
+      username = _username;
+      password = _password;
+    });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    usernameController.dispose();
-    passwordController.dispose();
-  }
 
   Map<String, IconData> icons = {
     "nacimiento": Icons.calendar_month_rounded,
@@ -172,18 +164,12 @@ class _ProfileState extends State<Profile> {
     "domicilio": Icons.house_rounded,
   };
 
-  @override
-  void initState() {
-    super.initState();
-    user = getUser();
-  }
-
 
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>(
-      future: user,
+      future: getUser(),
         builder: (context, user) {
         if (user.hasError){
           return Login(login);
