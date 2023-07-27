@@ -120,6 +120,9 @@ class _ProfileState extends State<Profile> {
   Future<User> getUser() async {
       var response = await http.post(
           Uri.parse('http://10.0.2.2:8000/login'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
           body: json.encode({"dni": username, "contraseña": password}));
       if (response.statusCode == 200) {
         dynamic user = jsonDecode(response.body)["usuario"];
