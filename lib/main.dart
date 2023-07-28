@@ -22,7 +22,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   ThemeMode currentTheme = ThemeMode.system;
   List<Widget> pages = const[PositionsTable(), Fixture(), Home(), Home(), Profile()];
-  int pageIndex = 1;
+  int pageIndex = 2;
 
   void click(int index){
     setState(() {

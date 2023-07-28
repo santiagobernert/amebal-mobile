@@ -21,9 +21,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const SizedBox(
+      title: SizedBox(
         width: 40,
-        child: Icon(Icons.sports_basketball),
+        child: Icon(Icons.sports_basketball, color: widget.currentTheme == ThemeMode.dark? Colors.white: Colors.black54,),
       ),
       centerTitle: true,
       elevation: 0,

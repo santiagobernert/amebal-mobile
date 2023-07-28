@@ -144,7 +144,6 @@ class _ProfileState extends State<Profile> {
       return Player.fromJson(playerJson);
     }else {
       print(getplayer.statusCode);
-      print("shit $id");
       throw Exception("Unable to retrieve player");
     }
   }
@@ -157,16 +156,6 @@ class _ProfileState extends State<Profile> {
       password = _password;
     });
   }
-
-
-  Map<String, IconData> icons = {
-    "nacimiento": Icons.calendar_month_rounded,
-    "sexo": Icons.person,
-    "mano": Icons.back_hand,
-    "telefono": Icons.phone,
-    "domicilio": Icons.house_rounded,
-  };
-
 
 
   @override
@@ -187,9 +176,13 @@ class _ProfileState extends State<Profile> {
             length: 4,
             child: Scaffold(
               appBar: AppBar(
-                bottom: const TabBar(
-                  indicatorColor: Colors.lightBlueAccent,
-                  tabs: [
+                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                toolbarHeight: 5.0,
+                elevation: 0,
+                bottom: TabBar(
+                  labelColor: Theme.of(context).tabBarTheme.labelColor,
+                  indicatorColor: Theme.of(context).tabBarTheme.indicatorColor,
+                  tabs: const [
                     Tab(text: "Perfil",),
                     Tab(text: "Datos",),
                     Tab(text: "Carnet",),
@@ -201,20 +194,24 @@ class _ProfileState extends State<Profile> {
                 children: [
                   Center(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(width: double.infinity,
                             height: 50,
                             decoration: BoxDecoration(border: Border.all(width: 2)),
                             child: const Text("Anuncio")),
+                        Column(
+                          children: [
                         const CircleAvatar(radius: 50,),
                         const SizedBox(height: 10,),
                         Text("${user.data!.nombre} ${user.data!.apellido}"),
                         Text(player.data!.estado.toUpperCase()),
-                        const SizedBox(height: 40,),
+                        const SizedBox(height: 30,),
                         Text(player.data!.club),
                         Text(player.data!.categoria),
                         Text(player.data!.carnet),
+                          ],
+                        ),
                         Container(width: double.infinity,
                             height: 50,
                             decoration: BoxDecoration(border: Border.all(width: 2)),
@@ -223,28 +220,27 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   Center(
-                    child: Padding(
+                    child: ListView(
                       padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  border: Border.all(width: 2)),
-                              child: const Text("Anuncio")),
-                          const Text("Datos del usuario", style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),),
-                          const SizedBox(height: 10,),
-                          SingleChildScrollView(
-                            child: Column(
+                      children: [Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(width: double.infinity,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    border: Border.all(width: 2)),
+                                child: const Text("Anuncio")),
+                            const Text("Datos del usuario", style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),),
+                            const SizedBox(height: 10,),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                UserData(Icons.assignment_ind_rounded, "DNI ",
+                                UserData("DNI ",
                                     "${user.data!.dni}"),
                                 UserData(
-                                    Icons.email_rounded, "Email ", user.data!.email),
+                                    "Email ", user.data!.email),
                                 Row(
                                     children: [
                                       Flexible(
@@ -257,7 +253,7 @@ class _ProfileState extends State<Profile> {
                                               .getPlayerData()
                                               .entries
                                               .map((data) =>
-                                              UserData(icons[data.key] ?? Icons.add,
+                                              UserData(
                                                   data.key, data.value.toString()))
                                               .toList()
                                           ,
@@ -267,11 +263,10 @@ class _ProfileState extends State<Profile> {
                                 )
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),],
                       ),
                     ),
-                  ),
                   const Icon(Icons.directions_car, size: 350),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

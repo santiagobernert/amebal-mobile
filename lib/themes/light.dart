@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 ThemeData light = ThemeData(
     brightness: Brightness.light,
+    primaryColor: Colors.white,
     appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent
+        backgroundColor: Colors.white,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Color(0xff0a4b8f),
@@ -13,6 +14,11 @@ ThemeData light = ThemeData(
         fillColor: Colors.white30,
         labelStyle: TextStyle(color: Colors.black54),
         iconColor: Colors.black54
-    )
+    ),
+    tabBarTheme: const TabBarTheme(
+        dividerColor: Colors.white,
+        indicatorColor: Color(0xff0a4b8f),
+        labelColor: Colors.black,
+    ),
 );
 
