@@ -33,13 +33,13 @@ class _ArticleWidgetState extends State<ArticleWidget> {
     return GestureDetector(
       onTap: click,
       child: Container(
-        width: widget.main? double.infinity : MediaQuery.of(context).size.width * 0.42,
+        width: widget.main? double.infinity : MediaQuery.of(context).size.width * 0.41,
         color: Colors.amberAccent,
-        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+        margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
         height: widget.main? 170 : 120,
         padding: const EdgeInsets.all(15),
         alignment: Alignment.bottomLeft,
-        child: Text(widget.title, style: TextStyle(color: Colors.white, fontSize: 20),),
+        child: Text(widget.title, style: const TextStyle(color: Colors.white, fontSize: 14),),
         ),
     );
   }

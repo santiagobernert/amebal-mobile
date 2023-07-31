@@ -108,9 +108,17 @@ class _PositionsTableState extends State<PositionsTable> {
             children: [
               const Text("Tabla de Posiciones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
               const SizedBox(height: 20,),
+              Container(width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(border: Border.all(width: 2)),
+                  child: const Text("Anuncio")),
               Filters(filters),
               const SizedBox(height: 20,),
               Text("Error: ${snapshot.error}"),
+              Container(width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(border: Border.all(width: 2)),
+                  child: const Text("Anuncio")),
             ],
           );
         }
@@ -121,6 +129,10 @@ class _PositionsTableState extends State<PositionsTable> {
           children: [
             const Text("Tabla de Posiciones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
             const SizedBox(height: 20,),
+            Container(width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(border: Border.all(width: 2)),
+                child: const Text("Anuncio")),
             Filters(filters),
             const SizedBox(height: 20,),
             Container(
@@ -199,7 +211,11 @@ class _PositionsTableState extends State<PositionsTable> {
                       child: Text("${data.points}")),
                 ],
               )).toList(),
-            )
+            ),
+            Container(width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(border: Border.all(width: 2)),
+                child: const Text("Anuncio")),
           ],
         );
       }

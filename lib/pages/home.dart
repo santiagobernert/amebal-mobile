@@ -57,22 +57,26 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextInput((){}),
+              Container(width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(border: Border.all(width: 2)),
+                  child: const Text("Anuncio")),
               Expanded(
                 child: ListView(
                   children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Container(width: double.infinity,height: 50, decoration: BoxDecoration(border: Border.all(width: 2)),child: Text("Anuncio")),
-                  ),
                   ArticleWidget(main: true, id: first["id"], title: first["title"],),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.spaceBetween,
                     children: snapshot.data!.map((n)=>ArticleWidget(id: n["id"], title: n["title"])).toList(),
                   ),
-                ]),
-              )
 
+                ]),
+              ),
+              Container(width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(border: Border.all(width: 2)),
+                  child: const Text("Anuncio")),
 
             ],
           ),
