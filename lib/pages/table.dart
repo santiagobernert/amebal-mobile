@@ -106,6 +106,7 @@ class _PositionsTableState extends State<PositionsTable> {
         if (snapshot.hasError){
           return Column(
             children: [
+              const SizedBox(height: 20,),
               const Text("Tabla de Posiciones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
               const SizedBox(height: 20,),
               Container(width: double.infinity,
@@ -127,6 +128,7 @@ class _PositionsTableState extends State<PositionsTable> {
         }
         return Column(
           children: [
+            const SizedBox(height: 20,),
             const Text("Tabla de Posiciones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
             const SizedBox(height: 20,),
             Container(width: double.infinity,
@@ -134,7 +136,7 @@ class _PositionsTableState extends State<PositionsTable> {
                 decoration: BoxDecoration(border: Border.all(width: 2)),
                 child: const Text("Anuncio")),
             Filters(filters),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 10,),
             Container(
               padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
               decoration: const BoxDecoration(color: Color(0xFF0A4B8F)),
