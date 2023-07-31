@@ -3,6 +3,7 @@ import 'package:amebal/widgets/UserData.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class User{
   int id;
@@ -116,16 +117,29 @@ class _ProfileState extends State<Profile> {
   late String password;
   late Future<User> user;
   late Future<Player> player;
+  AndroidOptions _getAndroidOptions() => const AndroidOptions(
+    encryptedSharedPreferences: true,
+  );
+  final storage = const FlutterSecureStorage(aOptions: AndroidOptions(
+    encryptedSharedPreferences: true,
+  ));
 
   Future<User> getUser() async {
+    String storagePassword = await storage.read(key: "password", aOptions: _getAndroidOptions()) ?? "";
+    String storageUsername = await storage.read(key: "username", aOptions: _getAndroidOptions()) ?? "";
+    print("1$storageUsername$storagePassword");
+    print(storageUsername.isNotEmpty);
       var response = await http.post(
           Uri.parse('http://10.0.2.2:8000/login'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
-          body: json.encode({"dni": username, "contraseña": password}));
+          body: json.encode({"dni": storageUsername.isNotEmpty?storageUsername:username, "contraseña": storagePassword.isNotEmpty? storagePassword: password}));
       if (response.statusCode == 200) {
+        print("succes");
         dynamic user = jsonDecode(response.body)["usuario"];
+        await storage.write(key: "username", value: storageUsername.isNotEmpty?storageUsername:username, aOptions: _getAndroidOptions());
+        await storage.write(key: "password", value: storagePassword.isNotEmpty?storagePassword:password, aOptions: _getAndroidOptions());
         return User.fromJson(user);
       }
       else {
@@ -164,6 +178,7 @@ class _ProfileState extends State<Profile> {
       future: getUser(),
         builder: (context, user) {
         if (user.hasError){
+          print(user.error);
           return Login(login);
         }
         if (user.data == null){

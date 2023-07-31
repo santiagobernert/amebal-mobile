@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
             const Text("Login"),
             TextField(
               controller: usernameController,
+              enableSuggestions: true,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.person),
@@ -47,6 +48,9 @@ class _LoginState extends State<Login> {
             const SizedBox(height: 10,),
             TextField(
               controller: passwordController,
+              obscureText: true,
+              autocorrect: false,
+              enableSuggestions: false,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.password),
                 labelText: "Contraseña",
@@ -54,8 +58,12 @@ class _LoginState extends State<Login> {
             ),
             const SizedBox(height: 10,),
             OutlinedButton(
-                onPressed: onclick,
-                child: const Text("Log in"))
+              onPressed: onclick,
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(Colors.lightBlue),
+                foregroundColor: MaterialStatePropertyAll(Colors.white),
+              ),
+              child: const Text("Log in")),
           ],
         ),
       ),
