@@ -59,7 +59,7 @@ class _FixtureState extends State<Fixture> {
                 Filters(filters),
                 Expanded(
                     child: ListView(
-                      children: announceMap(snapshot.data!.map((game) => Container(child: GameWidget(game: game))).toList())
+                      children: announceMap(list:snapshot.data!.map((game) => Container(child: GameWidget(game: game))).toList(), separation: 4)
                     )
                 ),
               ]

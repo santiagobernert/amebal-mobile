@@ -5,6 +5,8 @@ import 'package:amebal/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../widgets/announces.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -57,10 +59,6 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextInput((){}),
-              Container(width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(border: Border.all(width: 2)),
-                  child: const Text("Anuncio")),
               Expanded(
                 child: ListView(
                   children: [
@@ -68,16 +66,11 @@ class _HomeState extends State<Home> {
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     alignment: WrapAlignment.spaceBetween,
-                    children: snapshot.data!.map((n)=>ArticleWidget(id: n["id"], title: n["title"])).toList(),
+                    children: announceMap(list:snapshot.data!.map((n)=>Container(child: ArticleWidget(id: n["id"], title: n["title"]))).toList(), separation: 7),
                   ),
 
                 ]),
               ),
-              Container(width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(border: Border.all(width: 2)),
-                  child: const Text("Anuncio")),
-
             ],
           ),
         );
