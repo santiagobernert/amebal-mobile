@@ -96,19 +96,21 @@ class GameWidget extends StatelessWidget {
                       color: Color(0xFF0A4B8F),
                     ),
                     alignment: Alignment.center,
-                    child: Text(game.torneo, style: TextStyle(color: Colors.white, ),)),
+                    child: Text(game.torneo, style: const TextStyle(color: Colors.white, ),)),
               ),
             ],
           ),
-          Text("${game.fecha}"),
+          Text(game.fecha),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("${game.resultado}")
+              const Icon(Icons.sports_baseball_outlined, size: 60.0,),
+              Text(game.resultado),
+              const Icon(Icons.shield_moon_outlined, size: 60.0,),
             ],
           ),
-          Text("${game.titulo}"),
+          Text(game.titulo),
         ],
       ),
     );

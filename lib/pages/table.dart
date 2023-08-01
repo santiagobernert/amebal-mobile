@@ -173,9 +173,15 @@ class _PositionsTableState extends State<PositionsTable> {
                     builder: (context, snapshot) {
                       return Container(
                           height: 50,
-                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
                           alignment: Alignment.center,
-                          child: Text(snapshot.data!));
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Icon(Icons.shield_moon_outlined, size: 30.0,),
+                              Text(snapshot.data!),
+                            ],
+                          ));
                     }
                   ),
                   Container(
