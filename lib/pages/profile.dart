@@ -162,6 +162,14 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  void logout() async {
+    await storage.delete(key: "username", aOptions: _getAndroidOptions());
+    await storage.delete(key: "password", aOptions: _getAndroidOptions());
+    setState(() {
+      username = "";
+      password = "";
+    });
+  }
 
   void login(_username, _password) {
     // if username and password are valid, set state
@@ -227,6 +235,13 @@ class _ProfileState extends State<Profile> {
                         Text(player.data!.carnet),
                           ],
                         ),
+                        OutlinedButton(
+                            onPressed: logout,
+                            style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(Colors.red),
+                              foregroundColor: MaterialStatePropertyAll(Colors.white),
+                            ),
+                            child: const Text("Salir")),
                         Container(width: double.infinity,
                             height: 50,
                             decoration: BoxDecoration(border: Border.all(width: 2)),
