@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../widgets/announces.dart';
 
 import '../widgets/game.dart';
+import 'package:amebal/widgets/filters.dart';
 
 
 class Fixture extends StatefulWidget {
@@ -13,9 +15,12 @@ class Fixture extends StatefulWidget {
 }
 
 class _FixtureState extends State<Fixture> {
+  String torneo = "Todos";
+  String categoria = "Todos";
+  String sexo = "Todos";
   Future<List<Game>> getFixture() async {
     var response = await http.get(
-        Uri.parse('http://10.0.2.2:8000/partidos'));
+        Uri.parse('http://10.0.2.2:8000/partidos?categoria=$categoria&sexo=$sexo&torneo=$torneo'));
     if (response.statusCode == 200) {
       dynamic body = jsonDecode(response.body)["partidos"];
       return (body as List<dynamic>).map((g)=>Game.fromJson(g as Map<String, dynamic>)).toList();
@@ -23,6 +28,16 @@ class _FixtureState extends State<Fixture> {
       print(response.statusCode);
       throw Exception("Unable to retrieve games");
     }
+  }
+
+  void filters(_torneo, _categoria, _sexo){
+    print(torneo+ categoria+sexo);
+    setState(() {
+      torneo = _torneo;
+      categoria = _categoria;
+      sexo = _sexo;
+    });
+    print(torneo+ categoria+sexo);
   }
 
   @override
@@ -36,18 +51,19 @@ class _FixtureState extends State<Fixture> {
             child: CircularProgressIndicator(),
           );
         }
-        return Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
+        return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 20,),
+                const Text("Fixture", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                Filters(filters),
                 Expanded(
                     child: ListView(
-                      children: snapshot.data!.map((game) => GameWidget(game: game)).toList()
+                      children: announceMap(snapshot.data!.map((game) => Container(child: GameWidget(game: game))).toList())
                     )
                 ),
               ]
-        ),);
+        );
       }
     );
   }
