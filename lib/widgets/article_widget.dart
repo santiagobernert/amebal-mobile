@@ -21,9 +21,7 @@ class _ArticleWidgetState extends State<ArticleWidget> {
     var getArticle = await http.get(
         Uri.parse('http://10.0.2.2:8000/articulo?id=${widget.id}',)
     );
-    print(getArticle.body);
     dynamic articleJson = jsonDecode(getArticle.body)["articulo"];
-    print(articleJson);
     Article article = Article.fromJson(articleJson);
     Navigator.push(context, MaterialPageRoute(builder: (context)=> ArticlePage(article: article)));
   }
